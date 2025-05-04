@@ -4,7 +4,7 @@ module com.tonyguerra.ytplayer {
     requires transitive javafx.graphics;
     requires com.tonyguerra.ytdownloader;
 
-    opens com.tonyguerra.ytplayer.controllers to javafx.fxml;
-
     exports com.tonyguerra.ytplayer;
+
+    opens com.tonyguerra.ytplayer.controllers to javafx.fxml;
 }

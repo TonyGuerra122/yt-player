@@ -2,26 +2,22 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.tonyguerra.ytplayer</groupId>
     <artifactId>yt-player</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <javafx.version>21.0.1</javafx.version>
+        <javafx.platform>${os.detected.classifier}</javafx.platform>
         <jpackage.type>app-image</jpackage.type>
     </properties>
+
     <dependencies>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>17</version>
-        </dependency>
+        <!-- yt-downloader JAR local -->
         <dependency>
             <groupId>com.tonyguerra.ytdownloader</groupId>
             <artifactId>yt-downloader</artifactId>
@@ -29,18 +25,49 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/yt-downloader-1.0.0.jar</systemPath>
         </dependency>
+
+        <!-- JavaFX com classifier detectado -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
     </dependencies>
+
     <build>
         <plugins>
+            <!-- Detectar SO automaticamente (gera ${os.detected.classifier}) -->
+            <plugin>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>detect</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Compilador -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>17</source>
                     <release>17</release>
                 </configuration>
             </plugin>
+
+            <!-- JAR com Main-Class -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -49,25 +76,36 @@
                     <archive>
                         <manifest>
                             <mainClass>com.tonyguerra.ytplayer.Main</mainClass>
+                            <module>com.tonyguerra.ytplayer</module>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
+
+            <!-- JavaFX Plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.6</version>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.tonyguerra.ytplayer.Main</mainClass>
+                    <module>com.tonyguerra.ytplayer</module>
+                    <systemProperties>
+                        <prism.order>sw</prism.order>
+                    </systemProperties>
+                    <options>
+                        <option>--add-modules</option>
+                        <option>javafx.controls,javafx.fxml</option>
+                    </options>
+                </configuration>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running -->
-                        <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
-                        <configuration>
-                            <mainClass>com.tonyguerra.ytplayer.Main</mainClass>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Fat JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -84,13 +122,15 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- jpackage -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <id>package-wite-jpackage</id>
+                        <id>package-with-jpackage</id>
                         <phase>package</phase>
                         <goals>
                             <goal>exec</goal>
@@ -98,19 +138,19 @@
                         <configuration>
                             <executable>jpackage</executable>
                             <arguments>
-                                <arguments>--name</arguments>
-                                <arguments>Yt Player</arguments>
-                                <arguments>--input</arguments>
-                                <arguments>${project.build.directory}</arguments>
-                                <arguments>--main-jar</arguments>
-                                <arguments>${project.build.finalName}.jar</arguments>
-                                <arguments>--main-class</arguments>
-                                <arguments>com.tonyguerra.ytplayer.Main</arguments>
-                                <arguments>--type</arguments>
-                                <arguments>${jpackage.type}</arguments>
-                                <arguments>--icon</arguments>
-                                <arguments>
-                                    ${project.basedir}/src/main/resources/com/tonyguerra/ytplay/favicon.png</arguments>
+                                <argument>--name</argument>
+                                <argument>Yt Player</argument>
+                                <argument>--input</argument>
+                                <argument>${project.build.directory}</argument>
+                                <argument>--main-jar</argument>
+                                <argument>${project.build.finalName}.jar</argument>
+                                <argument>--main-class</argument>
+                                <argument>com.tonyguerra.ytplayer.Main</argument>
+                                <argument>--type</argument>
+                                <argument>${jpackage.type}</argument>
+                                <argument>--icon</argument>
+                                <argument>
+                                    ${project.basedir}/src/main/resources/com/tonyguerra/ytplay/favicon.png</argument>
                             </arguments>
                         </configuration>
                     </execution>
