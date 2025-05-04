@@ -40,7 +40,7 @@ jobs:
           mvn clean package -Djpackage.type=rpm
 
       - name: Upload Linux Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: linux-installers
           path: |
@@ -86,7 +86,7 @@ jobs:
           --win-menu
 
       - name: Upload Windows Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: windows-installer
           path: |
