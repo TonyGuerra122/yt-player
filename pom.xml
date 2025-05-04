@@ -149,7 +149,7 @@
                                 <argument>${jpackage.type}</argument>
                                 <argument>--icon</argument>
                                 <argument>
-                                    ${project.basedir}/src/main/resources/com/tonyguerra/ytplay/favicon.png</argument>
+                                    ${project.basedir}/src/main/resources/com/tonyguerra/ytplayer/favicon.png</argument>
                             </arguments>
                         </configuration>
                     </execution>
