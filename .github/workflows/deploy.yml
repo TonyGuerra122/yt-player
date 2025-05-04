@@ -1,0 +1,143 @@
+name: Build and Release Yt Play
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+env:
+  version: 1.0.0
+
+jobs:
+  build-linux:
+    name: Build for linux
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build and Package (DEB and RPM)
+        run: |
+          mvn clean package -Djpackage.type=deb
+          mvn clean package -Djpackage.type=rpm
+
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-installers
+          path: |
+            *.deb
+            *.rpm
+  build-windows:
+    name: Build for Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v2
+        with:
+          path: C:\\Users\\runneradmin\\.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build JAR
+        run: mvn clean package
+
+      - name: Verify JAR in Target
+        run: ls -l target
+
+      - name: Build and Package (MSI)
+        run: |
+          jpackage `
+          --name "YT Player" `
+          --input target `
+          --main-jar yt-player-1.0-SNAPSHOT.jar `
+          --main-class com.tonyguerra.ytplayer.Main `
+          --type msi `
+          --icon src/main/resources/com/tonyguerra/ytplayer/favicon.ico `
+          --win-menu
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-installer
+          path: |
+            *.msi
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs:
+      - build-linux
+      - build-windows
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download Linux Installers
+        uses: actions/download-artifact@v3
+        with:
+          name: linux-installers
+          path: artifacts/linux
+
+      - name: Download Windows Installer
+        uses: actions/download-artifact@v3
+        with:
+          name: windows-installer
+          path: artifacts/windows
+
+      - name: List Artifacts
+        run: |
+          echo "Linux Installers:"
+          ls -l artifacts/linux
+          echo "Windows Installer:"
+          ls -l artifacts/windows
+
+      - name: Extract Version from Maven
+        id: extract-version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create GitHub Release with Artifacts
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: YT Player v${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/linux/*.deb
+            artifacts/linux/*.rpm
+            artifacts/windows/*.msi

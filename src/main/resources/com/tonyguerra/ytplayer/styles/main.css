@@ -1,0 +1,103 @@
+.main-pane {
+    -fx-background-color: #121212;
+}
+
+.text-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-justify-text: center;
+    -fx-background-color: #2E2E2E;
+    -fx-text-fill: #FFFFFF;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+
+.text-label {
+    -fx-font-size: 1.2em;
+    -fx-text-fill: #444;
+}
+
+.text-input {
+    -fx-background-color: transparent;
+    -fx-border-color: #3f51b5;
+    -fx-border-width: 2px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+    -fx-prompt-text-fill: #aaa;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.text-input:focused {
+    -fx-border-color: #303f9f;
+    -fx-effect: dropshadow(three-pass-box, rgba(63, 81, 181, 0.3), 8, 0.0, 0, 4);
+}
+
+.primary-button {
+    -fx-background-color: #3f51b5;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.primary-button:hover {
+    -fx-background-color: #303f9f;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #283593;
+}
+
+.video-card {
+    -fx-padding: 10px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 4, 0.0, 0, 2);
+}
+
+.video-title {
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+}
+
+.video-meta {
+    -fx-font-size: 0.9em;
+    -fx-text-fill: #666;
+}
+
+.secondary-button {
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 6px 16px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 3, 0, 0, 1);
+}
+
+.secondary-button:hover {
+    -fx-background-color: #388e3c;
+}
+
+.secondary-button:pressed {
+    -fx-background-color: #2e7d32;
+}
+
+.toast {
+    -fx-background-color: rgba(0, 0, 0, 0.75);
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 6, 0, 0, 2);
+}
