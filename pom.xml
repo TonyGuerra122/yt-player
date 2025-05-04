@@ -76,7 +76,6 @@
                     <archive>
                         <manifest>
                             <mainClass>com.tonyguerra.ytplayer.Main</mainClass>
-                            <module>com.tonyguerra.ytplayer</module>
                         </manifest>
                     </archive>
                 </configuration>
