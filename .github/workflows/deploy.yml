@@ -40,19 +40,20 @@ jobs:
           mvn clean package -Djpackage.type=rpm
 
       - name: Upload Linux Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: linux-installers
           path: |
             *.deb
             *.rpm
+
   build-windows:
     name: Build for Windows
     runs-on: windows-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -86,7 +87,7 @@ jobs:
           --win-menu
 
       - name: Upload Windows Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: windows-installer
           path: |
@@ -101,16 +102,16 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download Linux Installers
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: linux-installers
           path: artifacts/linux
 
       - name: Download Windows Installer
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: windows-installer
           path: artifacts/windows
