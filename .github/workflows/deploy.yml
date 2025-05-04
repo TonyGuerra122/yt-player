@@ -34,6 +34,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Install yt-downloader in local Maven repo
+        run: |
+          mvn install:install-file \
+            -Dfile=lib/yt-downloader-1.0.0.jar \
+            -DgroupId=com.tonyguerra.ytdownloader \
+            -DartifactId=yt-downloader \
+            -Dversion=1.0.0 \
+            -Dpackaging=jar
+
       - name: Build and Package (DEB and RPM)
         run: |
           mvn clean package -Djpackage.type=deb
@@ -68,6 +77,15 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Install yt-downloader in local Maven repo
+        run: |
+        mvn install:install-file `
+          -Dfile=lib/yt-downloader-1.0.0.jar `
+          -DgroupId=com.tonyguerra.ytdownloader `
+          -DartifactId=yt-downloader `
+          -Dversion=1.0.0 `
+          -Dpackaging=jar
 
       - name: Build JAR
         run: mvn clean package
