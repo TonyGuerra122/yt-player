@@ -85,10 +85,18 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Extract Version from pom.xml
-        id: extract-version
+        shell: pwsh
         run: |
-          $version = mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          try {
+            $version = mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+            if (-not $version) {
+              throw "Version not found"
+            }
+            "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          } catch {
+            Write-Error "Failed to extract version: $_"
+            exit 1
+          }
             
       - name: Install yt-downloader in local Maven repo
         run: |
