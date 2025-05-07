@@ -65,7 +65,11 @@ public final class VersionUtils {
                 .uri(URI.create(url))
                 .build();
 
-        client.send(request, HttpResponse.BodyHandlers.ofFile(outputFile));
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofFile(outputFile)).thenAccept(response -> {
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed to download the file: " + response.statusCode());
+            }
+        }).join();
     }
 
     private static int[] parseVersion(String version) {
