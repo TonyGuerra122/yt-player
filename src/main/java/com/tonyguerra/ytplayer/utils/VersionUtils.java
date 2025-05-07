@@ -60,16 +60,15 @@ public final class VersionUtils {
 
         final var outputFile = Path.of(output);
 
-        final var client = HttpClient.newHttpClient();
+        final var client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .build();
+                
         final var request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();
 
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofFile(outputFile)).thenAccept(response -> {
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Failed to download the file: " + response.statusCode());
-            }
-        }).join();
+        client.send(request, HttpResponse.BodyHandlers.ofFile(outputFile));
     }
 
     private static int[] parseVersion(String version) {
