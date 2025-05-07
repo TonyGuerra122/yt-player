@@ -14,7 +14,7 @@
    fx:controller="com.tonyguerra.ytplayer.controllers.PrimaryController">
 
    <top>
-      <Label maxWidth="Infinity" styleClass="text-title" text="Yt Player"
+      <Label fx:id="textTitle" maxWidth="Infinity" styleClass="text-title" text="Yt Player"
          BorderPane.alignment="CENTER" />
    </top>
 

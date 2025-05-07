@@ -1,5 +1,8 @@
 package com.tonyguerra.ytplayer.controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.tonyguerra.ytdownloader.utils.YtUtils;
 import com.tonyguerra.ytplayer.App;
 import com.tonyguerra.ytplayer.components.Toast;
@@ -7,13 +10,18 @@ import com.tonyguerra.ytplayer.components.Toast;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 
-public final class PrimaryController {
+public final class PrimaryController implements Initializable{
+    @FXML
+    private Label textTitle;
+    
     @FXML
     private BorderPane rootPane;
 
@@ -25,6 +33,12 @@ public final class PrimaryController {
 
     @FXML
     private VBox resultsBox;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        final String version = App.class.getPackage().getImplementationVersion() == null ? "dev" : App.class.getPackage().getImplementationVersion();
+        textTitle.setText(textTitle.getText() + "-" + version);        
+    }
 
     @FXML
     private void onSearchAction(ActionEvent event) {
