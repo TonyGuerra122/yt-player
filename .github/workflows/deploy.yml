@@ -87,11 +87,11 @@ jobs:
       - name: Extract Version from pom.xml
         shell: pwsh
         run: |
-          $version = & mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+          $version = & mvn help:evaluate "-Dexpression=project.version" "-q" "-DforceStdout" | Select-Object -First 1
           Write-Host "Resolved version: $version"
-                
-          if ([string]::IsNullOrWhiteSpace($version)) {
-            Write-Error "Failed to extract version"
+            
+          if ([string]::IsNullOrWhiteSpace($version) -or $version -like "<*") {
+            Write-Error "Invalid or missing version: $version"
             exit 1
           }
             
