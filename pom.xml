@@ -22,6 +22,8 @@
             <groupId>com.tonyguerra.ytdownloader</groupId>
             <artifactId>yt-downloader</artifactId>
             <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/yt-downloader-1.0.0.jar</systemPath>
         </dependency>
 
         <!-- JavaFX com classifier detectado -->
