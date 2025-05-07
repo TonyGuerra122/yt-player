@@ -87,15 +87,17 @@ jobs:
       - name: Extract Version from pom.xml
         shell: pwsh
         run: |
-          $version = & mvn help:evaluate "-Dexpression=project.version" "-q" "-DforceStdout" | Select-Object -First 1
-          Write-Host "Resolved version: $version"
-            
-          if ([string]::IsNullOrWhiteSpace($version) -or $version -like "<*") {
-            Write-Error "Invalid or missing version: $version"
+          $version = & mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            Write-Error "Failed to extract version"
             exit 1
           }
-            
-          "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+          # Remove o sufixo -SNAPSHOT se existir
+          $sanitizedVersion = $version -replace "-SNAPSHOT", ""
+          
+          Write-Host "Resolved version: $version (sanitized: $sanitizedVersion)"
+          "VERSION=$sanitizedVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
             
       - name: Install yt-downloader in local Maven repo
         run: |
