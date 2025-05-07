@@ -44,8 +44,8 @@ public final class VersionUtils {
                     final String output = System.getProperty("user.home") + "\\Downloads\\YTPlayer.msi";
                     downloadMsi(output);
 
-                    new ProcessBuilder("msiexec", "/i", output, "/quiet").start();
-
+                    new ProcessBuilder("cmd", "/c", "start", "", "msiexec", "/i", output).start();
+                    
                     System.exit(0);
 
                 } catch (Exception e) {
