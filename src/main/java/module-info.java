@@ -3,6 +3,8 @@ module com.tonyguerra.ytplayer {
     requires transitive javafx.fxml;
     requires transitive javafx.graphics;
     requires com.tonyguerra.ytdownloader;
+    requires java.xml;
+    requires java.net.http;
 
     exports com.tonyguerra.ytplayer;
 
