@@ -34,6 +34,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Extract Version from pom.xml
+        id: extract-version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Install yt-downloader in local Maven repo
         run: |
           mvn install:install-file \
@@ -98,7 +104,7 @@ jobs:
           jpackage `
           --name "YT Player" `
           --input target `
-          --main-jar yt-player-1.0-SNAPSHOT.jar `
+          --main-jar yt-player-${{ env.VERSION }}.jar `
           --main-class com.tonyguerra.ytplayer.Main `
           --type msi `
           --icon src/main/resources/com/tonyguerra/ytplayer/favicon.ico `
