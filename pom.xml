@@ -9,8 +9,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <javafx.version>21.0.1</javafx.version>
         <javafx.platform>${os.detected.classifier}</javafx.platform>
         <jpackage.type>app-image</jpackage.type>
@@ -22,6 +22,8 @@
             <groupId>com.tonyguerra.ytdownloader</groupId>
             <artifactId>yt-downloader</artifactId>
             <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/yt-downloader-1.0.0.jar</systemPath>
         </dependency>
 
         <!-- JavaFX com classifier detectado -->
@@ -61,7 +63,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <release>17</release>
+                    <release>21</release>
                 </configuration>
             </plugin>
 
