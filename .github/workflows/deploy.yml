@@ -120,7 +120,7 @@ jobs:
           --main-jar yt-player-${{ env.VERSION }}.jar `
           --main-class com.tonyguerra.ytplayer.Main `
           --app-version ${{ env.VERSION }} `
-          --win-upgrade-uuid 0a1b2c3d-4e5f-6g7h-8i9j-0k1l2m3n4o5p `
+          --win-upgrade-uuid ${{ secrets.APP_UUID }} `
           --type msi `
           --icon src/main/resources/com/tonyguerra/ytplayer/favicon.ico `
           --win-menu
