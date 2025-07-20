@@ -1,73 +1,102 @@
 package com.tonyguerra.ytplayer.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.tonyguerra.ytdownloader.utils.YtUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tonyguerra.ytplayer.App;
-import com.tonyguerra.ytplayer.components.Toast;
+import com.tonyguerra.ytplayer.constants.Mappers;
+import com.tonyguerra.ytplayer.data.VideoInfo;
+import com.tonyguerra.ytplayer.utils.YtUtils;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.application.Platform;
+import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 
-public final class PrimaryController implements Initializable{
-    @FXML
-    private Label textTitle;
-    
-    @FXML
-    private BorderPane rootPane;
+public final class PrimaryController implements Initializable {
+  @FXML
+  private WebView webView;
 
-    @FXML
-    private VBox contentBox;
+  private JavaBridge javaBridge; // <-- adicionado
 
-    @FXML
-    private TextField urlField;
+  @Override
+  @FXML
+  public void initialize(URL location, ResourceBundle resources) {
+    final String html;
 
-    @FXML
-    private VBox resultsBox;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        final String version = App.class.getPackage().getImplementationVersion() == null ? "dev" : App.class.getPackage().getImplementationVersion();
-        textTitle.setText(textTitle.getText() + "-" + version);        
+    try {
+      html = App.loadHTML("main");
+    } catch (IOException ex) {
+      throw new RuntimeException("Error loading HTML content", ex);
     }
 
-    @FXML
-    private void onSearchAction(ActionEvent event) {
-        final String url = urlField.getText();
+    final var engine = webView.getEngine();
+    engine.setJavaScriptEnabled(true);
 
-        if (url.isEmpty())
-            return;
+    engine.setOnError(event -> {
+      System.out.println("JavaScript Alert: " + event.getMessage());
+    });
 
-        Platform.runLater(() -> Toast.showToast(contentBox, "Searching for " + url));
+    engine.setOnAlert(event -> {
+      System.out.println("JavaScript Alert: " + event.getData());
+    });
 
-        new Thread(() -> {
-            try {
-                final var video = YtUtils.getVideo(url);
-                final FXMLLoader loader = App.loadFXMLLoader("video-card");
-                final Node cardNode = loader.load();
+    engine.documentProperty().addListener((obs, oldDoc, newDoc) -> {
+      if (newDoc != null) {
+        javaBridge = new JavaBridge(); // <-- agora armazenamos
+        final var window = (JSObject) engine.executeScript("window");
+        window.setMember("javaConnector", javaBridge);
+      }
+    });
 
-                final VideoCardController controller = loader.getController();
-                controller.setData(resultsBox, video);
+    engine.loadContent(html);
+  }
 
-                Platform.runLater(() -> {
-                    resultsBox.getChildren().clear();
-                    resultsBox.getChildren().add(cardNode);
-                });
+  public class JavaBridge {
+    private VideoInfo videoInfo;
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Platform.runLater(() -> Toast.showToast(contentBox, "Error: " + ex.getMessage()));
-            }
-        }).start();
+    public JavaBridge() {
+      videoInfo = null;
     }
 
+    public void searchVideo(String url) {
+      if (url == null || url.isEmpty()) {
+        return;
+      }
+
+      try {
+        final var video = YtUtils.searchVideo(url);
+
+        if (!video.isPresent()) {
+          return;
+        }
+        videoInfo = video.get();
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+
+    public String getVideoInfo() {
+      if (videoInfo == null) {
+        return null;
+      }
+
+      try {
+        return Mappers.JSON_MAPPER.writeValueAsString(videoInfo);
+      } catch (JsonProcessingException e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    public String getVideoStreaming(String url) {
+      return YtUtils.getVideoStreamingUrl(url);
+    }
+
+    public boolean isYtdlAvailable() {
+      return YtUtils.isYtDlpPresent();
+    }
+  }
 }

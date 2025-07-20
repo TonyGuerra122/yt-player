@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" style="-fx-background-color: white;">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20" />
+    </padding>
+
+    <Label text="Inicializando o YT Player..." style="-fx-font-size: 16px;" />
+    <Label text="Verificando dependências (yt-dlp)..." />
+</VBox>

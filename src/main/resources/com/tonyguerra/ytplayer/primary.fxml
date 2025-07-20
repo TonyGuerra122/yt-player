@@ -1,40 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.web.WebView?>
 
-<BorderPane fx:id="rootPane" prefHeight="700.0" prefWidth="700.0" styleClass="main-pane"
-   stylesheets="@styles/main.css"
-   xmlns="http://javafx.com/javafx/17"
-   xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
    fx:controller="com.tonyguerra.ytplayer.controllers.PrimaryController">
 
-   <top>
-      <Label fx:id="textTitle" maxWidth="Infinity" styleClass="text-title" text="Yt Player"
-         BorderPane.alignment="CENTER" />
-   </top>
-
-   <center>
-      <VBox fx:id="contentBox" alignment="CENTER" spacing="12.0">
-         <Label styleClass="text-label" text="URL do vídeo" />
-         <TextField fx:id="urlField"
-            promptText="Cole o link aqui..."
-            styleClass="text-input">
-            <VBox.margin>
-               <Insets left="200.0" right="200.0" />
-            </VBox.margin>
-         </TextField>
-         <Button fx:id="searchButton"
-            onAction="#onSearchAction"
-            styleClass="primary-button"
-            text="Pesquisar" />
-
-         <!-- 🔽 Resultados aqui -->
-         <VBox fx:id="resultsBox" spacing="10.0" />
-      </VBox>
-   </center>
-</BorderPane>
+   <WebView fx:id="webView" AnchorPane.topAnchor="0.0"
+      AnchorPane.rightAnchor="0.0"
+      AnchorPane.bottomAnchor="0.0"
+      AnchorPane.leftAnchor="0.0"
+   />
+</AnchorPane>
