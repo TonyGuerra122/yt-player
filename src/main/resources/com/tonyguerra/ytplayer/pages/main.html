@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Player</title>
+    <!-- {{styles}} -->
+</head>
+
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h1>Bem-vindo ao YtMediaDownloader</h1>
+        </div>
+        <div class="card-body">
+            <div class="search-container">
+                <input type="text" id="videoUrl" class="search-input" placeholder="Cole o link do vídeo do YouTube">
+                <button id="searchBtn" class="search-button">Pesquisar</button>
+            </div>
+
+            <div id="ytdlp-status">⚠️ yt-dlp não está instalado. Instale antes de continuar.</div>
+
+            <div id="videoPreview" class="video-preview">
+                <p class="placeholder-text">A miniatura do vídeo aparecerá aqui.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+
+    <!-- {{scripts}} -->
+</body>
+
+</html>
