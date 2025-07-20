@@ -40,15 +40,6 @@ jobs:
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Install yt-downloader in local Maven repo
-        run: |
-          mvn install:install-file \
-            -Dfile=lib/yt-downloader-1.0.0.jar \
-            -DgroupId=com.tonyguerra.ytdownloader \
-            -DartifactId=yt-downloader \
-            -Dversion=1.0.0 \
-            -Dpackaging=jar
-
       - name: Build and Package (DEB and RPM)
         run: |
           mvn clean package -Djpackage.type=deb
@@ -96,15 +87,6 @@ jobs:
           }
             
           "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-            
-      - name: Install yt-downloader in local Maven repo
-        run: |
-          mvn install:install-file `
-            "-Dfile=lib/yt-downloader-1.0.0.jar" `
-            "-DgroupId=com.tonyguerra.ytdownloader" `
-            "-DartifactId=yt-downloader" `
-            "-Dversion=1.0.0" `
-            "-Dpackaging=jar"
 
       - name: Build JAR
         run: mvn clean package
