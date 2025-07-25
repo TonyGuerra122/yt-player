@@ -28,11 +28,10 @@
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-padding: 8px 12px;
-    -fx-background-radius: 6px;
-    -fx-border-color: #555;
+    -fx-background-radius: 6px 0px 0px 6px;
+    -fx-border-color: #555 transparent;
     -fx-border-width: 1px;
-    -fx-border-radius: 6px;
-    -fx-prompt-text-fill: #888;
+    -fx-border-radius: 6px 0px 0px 6px;
 }
 
 .text-field-custom:focused {
@@ -41,13 +40,13 @@
 }
 
 .button-custom {
-    -fx-background-color: #7289da;
+    -fx-background-color: #333;
     -fx-text-fill: white;
     -fx-padding: 8px 16px;
-    -fx-background-radius: 6px;
-    -fx-border-radius: 6px;
+    -fx-background-radius: 0px 6px 6px 0px;
+    -fx-border-radius: 0px 6px 6px 0px;
     -fx-cursor: hand;
-    -fx-border-color: transparent;
+    -fx-border-color: #555 transparent;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.0, 0, 1);
     -fx-transition: all 0.3s ease;
 }

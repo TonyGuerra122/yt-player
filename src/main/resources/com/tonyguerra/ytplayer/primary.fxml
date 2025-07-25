@@ -13,17 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-   prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/"
-   xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="400.0" prefWidth="676.0" AnchorPane.bottomAnchor="0.0"
-         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="400.0" prefWidth="676.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox style="-fx-border-color: transparent transparent white transparent;">
                <children>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
-                     preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/java-icon.png" />
                      </image>
@@ -60,8 +56,7 @@
             </HBox>
             <VBox alignment="CENTER" style="-fx-border-color: #333;">
                <children>
-                  <Label maxWidth="1.7976931348623157E308" style="-fx-font-size: 30px;"
-                     text="COLE A URL ABAIXO" textAlignment="CENTER">
+                  <Label maxWidth="1.7976931348623157E308" style="-fx-font-size: 30px;" text="COLE A URL ABAIXO" textAlignment="CENTER">
                      <styleClass>
                         <String fx:value="title" />
                         <String fx:value="text-center" />
@@ -71,24 +66,21 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField styleClass="text-field-custom">
-                     <VBox.margin>
-                        <Insets left="70.0" right="70.0" />
-                     </VBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </TextField>
-                  <Button mnemonicParsing="false" prefWidth="200.0" style="-fx-font-weight: bold;"
-                     text="Pesquisar">
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="20.0" />
-                     </VBox.margin>
-                     <styleClass>
-                        <String fx:value="button-custom" />
-                        <String fx:value="regular-text" />
-                     </styleClass>
-                  </Button>
+                  <HBox>
+                     <children>
+                        <TextField styleClass="text-field-custom" HBox.hgrow="ALWAYS">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </TextField>
+                        <Button mnemonicParsing="false" style="-fx-font-weight: bold;" text="Pesquisar">
+                           <styleClass>
+                              <String fx:value="button-custom" />
+                              <String fx:value="regular-text" />
+                           </styleClass>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
                <opaqueInsets>
                   <Insets />
