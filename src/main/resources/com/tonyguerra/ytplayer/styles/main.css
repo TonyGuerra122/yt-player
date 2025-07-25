@@ -1,0 +1,62 @@
+* {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-background-color: #121212;
+}
+
+.regular-text {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+}
+
+.title {
+    -fx-font-family: 'Roboto Bold', sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-text-fill: #333;
+}
+
+.text-white {
+    -fx-text-fill: #FFF;
+}
+
+.text-center {
+    -fx-alignment: center;
+}
+
+.text-field-custom {
+    -fx-background-color: #2c2f33;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #555;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-prompt-text-fill: #888;
+}
+
+.text-field-custom:focused {
+    -fx-border-color: #7289da;
+    -fx-effect: dropshadow(three-pass-box, #7289da, 5, 0.2, 0, 0);
+}
+
+.button-custom {
+    -fx-background-color: #7289da;
+    -fx-text-fill: white;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.0, 0, 1);
+    -fx-transition: all 0.3s ease;
+}
+
+.button-custom:hover {
+    -fx-background-color: #5b6eae;
+}
+
+.button-custom:pressed {
+    -fx-background-color: #4e5e94;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 4, 0.0, 0, 2);
+}
