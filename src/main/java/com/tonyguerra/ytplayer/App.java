@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import com.tonyguerra.ytplayer.utils.YtUtils;
+
 /**
  * JavaFX App
  */
@@ -34,7 +36,7 @@ public final class App extends Application {
         new Thread(() -> {
             try {
                 Platform.runLater(() -> System.out.println("Verificando yt-dlp..."));
-                com.tonyguerra.ytplayer.utils.YtUtils.ensureYtDlpInstalled();
+                YtUtils.ensureYtDlpInstalled();
 
                 // Após verificação, carrega a tela principal
                 Platform.runLater(() -> {
