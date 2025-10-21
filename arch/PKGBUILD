@@ -7,9 +7,9 @@ url="https://github.com/TonyGuerra122/yt-player"
 license=('MIT')
 depends=('java-runtime>=21')            # adicione 'java-openjfx' se usar JavaFX
 makedepends=('maven' 'jdk-openjdk>=21' 'git' 'imagemagick')  # <— para gerar ícone
-source=("git+$url.git#tag=v${pkgver}"
-        "yt-player.desktop"
-        "yt-player.launcher")
+source=("git+$url.git#branch=main"
+          "yt-player.desktop"
+          "yt-player.launcher")
 sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 build() {
