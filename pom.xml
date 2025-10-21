@@ -5,7 +5,7 @@
 
     <groupId>com.tonyguerra.ytplayer</groupId>
     <artifactId>yt-player</artifactId>
-    <version>1.2.0</version>
+    <version>1.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
