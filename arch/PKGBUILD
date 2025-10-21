@@ -1,47 +1,42 @@
 pkgname=yt-player
-pkgver=1.0.0
+pkgver=1.2.0
 pkgrel=1
-pkgdesc="YT Player - self-contained"
+pkgdesc="YT Player - um player simples para YouTube"
 arch=('x86_64')
 url="https://github.com/TonyGuerra122/yt-player"
 license=('MIT')
-depends=()  # sem Java do sistema
-makedepends=('jdk-openjdk>=21' 'maven' 'git')
+depends=('java-runtime>=21')            # adicione 'java-openjfx' se usar JavaFX
+makedepends=('maven' 'jdk-openjdk>=21' 'git' 'imagemagick')  # <— para gerar ícone
 source=("git+$url.git#tag=v${pkgver}"
         "yt-player.desktop"
-        "yt-player.png"
-        "yt-player.wrapper")
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+        "yt-player.launcher")
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 build() {
   cd "$srcdir/yt-player"
   mvn -B -DskipTests package
 
-  # gera app-image (sem .deb/.rpm)
-  jpackage \
-    --name "YT Player" \
-    --input target \
-    --main-jar yt-player-${pkgver}.jar \
-    --main-class com.tonyguerra.ytplayer.Main \
-    --app-version ${pkgver} \
-    --type app-image \
-    --dest "$srcdir" \
-    --icon src/main/resources/com/tonyguerra/ytplayer/favicon.ico
+  # Gerar PNG 256x a partir do ICO do projeto (ajuste o caminho se diferente)
+  convert "src/main/resources/com/tonyguerra/ytplayer/favicon.ico[0]" \
+          -resize 256x256 \
+          "$srcdir/yt-player.png"
 }
 
 package() {
-  install -d "$pkgdir/opt/yt-player" \
+  install -d "$pkgdir/usr/share/java/$pkgname" \
              "$pkgdir/usr/bin" \
              "$pkgdir/usr/share/applications" \
              "$pkgdir/usr/share/icons/hicolor/256x256/apps"
 
-  # move o app-image para /opt/yt-player
-  cp -a "$srcdir/YT Player"/* "$pkgdir/opt/yt-player/"
+  # JAR (ajuste o nome se necessário)
+  install -m644 "$srcdir/yt-player/target/${pkgname}-${pkgver}.jar" \
+    "$pkgdir/usr/share/java/$pkgname/${pkgname}-${pkgver}.jar"
 
-  # wrapper em /usr/bin
-  install -m755 "$srcdir/yt-player.wrapper" "$pkgdir/usr/bin/yt-player"
+  # Launcher com versão
+  sed "s/@VERSION@/${pkgver}/g" "$srcdir/yt-player.launcher" > "$srcdir/yt-player.launcher.out"
+  install -m755 "$srcdir/yt-player.launcher.out" "$pkgdir/usr/bin/yt-player"
 
-  # desktop + ícone
+  # Desktop + ícone gerado
   install -m644 "$srcdir/yt-player.desktop" \
     "$pkgdir/usr/share/applications/yt-player.desktop"
   install -m644 "$srcdir/yt-player.png" \
