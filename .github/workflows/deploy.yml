@@ -53,6 +53,34 @@ jobs:
             *.deb
             *.rpm
 
+  build-arch:
+    name: Build Arch package
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - name: Setup base
+        run: |
+          pacman -Syu --noconfirm git maven jdk-openjdk
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Sync version into PKGBUILD/launcher
+        run: |
+          VERSION=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)
+          sed -i "s/pkgver=.*/pkgver=${VERSION}/" arch/PKGBUILD
+          sed -i "s/@VERSION@/${VERSION}/g" arch/yt-player.launcher || true
+      - name: Build pkg.tar.zst
+        working-directory: arch
+        run: |
+          makepkg -sfc --noconfirm
+          ls -l *.pkg.tar.zst
+      - name: Upload Arch Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: arch-package
+          path: arch/*.pkg.tar.zst
+
   build-windows:
     name: Build for Windows
     runs-on: windows-latest
@@ -143,6 +171,12 @@ jobs:
           name: windows-installer
           path: artifacts/windows
 
+      - name: Download Arch Package
+        uses: actions/download-artifact@v4
+        with:
+          name: arch-package
+          path: artifacts/arch
+
       - name: List Artifacts
         run: |
           echo "Linux Installers:"
@@ -169,3 +203,4 @@ jobs:
             artifacts/linux/*.deb
             artifacts/linux/*.rpm
             artifacts/windows/*.msi
+            artifacts/arch/*.pkg.tar.zst

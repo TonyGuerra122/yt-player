@@ -1,0 +1,49 @@
+pkgname=yt-player
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="YT Player - self-contained"
+arch=('x86_64')
+url="https://github.com/TonyGuerra122/yt-player"
+license=('MIT')
+depends=()  # sem Java do sistema
+makedepends=('jdk-openjdk>=21' 'maven' 'git')
+source=("git+$url.git#tag=v${pkgver}"
+        "yt-player.desktop"
+        "yt-player.png"
+        "yt-player.wrapper")
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+build() {
+  cd "$srcdir/yt-player"
+  mvn -B -DskipTests package
+
+  # gera app-image (sem .deb/.rpm)
+  jpackage \
+    --name "YT Player" \
+    --input target \
+    --main-jar yt-player-${pkgver}.jar \
+    --main-class com.tonyguerra.ytplayer.Main \
+    --app-version ${pkgver} \
+    --type app-image \
+    --dest "$srcdir" \
+    --icon src/main/resources/com/tonyguerra/ytplayer/favicon.ico
+}
+
+package() {
+  install -d "$pkgdir/opt/yt-player" \
+             "$pkgdir/usr/bin" \
+             "$pkgdir/usr/share/applications" \
+             "$pkgdir/usr/share/icons/hicolor/256x256/apps"
+
+  # move o app-image para /opt/yt-player
+  cp -a "$srcdir/YT Player"/* "$pkgdir/opt/yt-player/"
+
+  # wrapper em /usr/bin
+  install -m755 "$srcdir/yt-player.wrapper" "$pkgdir/usr/bin/yt-player"
+
+  # desktop + ícone
+  install -m644 "$srcdir/yt-player.desktop" \
+    "$pkgdir/usr/share/applications/yt-player.desktop"
+  install -m644 "$srcdir/yt-player.png" \
+    "$pkgdir/usr/share/icons/hicolor/256x256/apps/yt-player.png"
+}

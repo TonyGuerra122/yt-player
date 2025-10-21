@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=YT Player
+Comment=Um player simples para YouTube
+Exec=yt-player %U
+Icon=yt-player
+Terminal=false
+Categories=AudioVideo;Video;
+StartupWMClass=YTPlayer
